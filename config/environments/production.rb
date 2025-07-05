@@ -90,4 +90,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Allow requests from production host
+  config.hosts << ENV["PRODUCTION_HOST"] if ENV["PRODUCTION_HOST"].present?
 end
