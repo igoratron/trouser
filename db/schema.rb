@@ -10,9 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-  enable_extension "timescaledb"
-
+ActiveRecord::Schema[8.0].define(version: 2025_07_05_212943) do
+  create_table "bookmarks", force: :cascade do |t|
+    t.string "url_id", null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["url"], name: "index_bookmarks_on_url", unique: true
+    t.index ["url_id"], name: "index_bookmarks_on_url_id"
+  end
 end

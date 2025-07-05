@@ -1,0 +1,105 @@
+# Cursor Rules for Trouser Project
+
+## Planning Before Execution Rule
+
+**CRITICAL: Always Plan Before Executing Code**
+
+Before making any code changes, modifications, or implementations, you MUST:
+
+1. **Analyze the Request**: Clearly understand what the user is asking for
+2. **Ask Clarifying Questions**: If ANY aspect is unclear, ambiguous, or missing context, STOP and ask questions
+3. **Assess Current State**: Examine existing code structure, patterns, and conventions
+4. **Create a Plan**: Outline the specific steps needed to achieve the goal
+5. **Consider Impact**: Think about how changes will affect other parts of the system
+6. **Identify Dependencies**: Note any files, functions, or systems that might be affected
+7. **Choose the Right Approach**: Select the most appropriate method/pattern for the task
+
+## Planning Template
+
+When planning, use this structure:
+
+```
+## Plan for [Task Description]
+
+### Current State Analysis:
+- [What currently exists]
+- [Relevant patterns/conventions found]
+- [Any constraints or limitations]
+
+### Implementation Steps:
+1. [Step 1 with rationale]
+2. [Step 2 with rationale]
+3. [Step 3 with rationale]
+...
+
+### Files to Modify:
+- [File 1]: [What changes and why]
+- [File 2]: [What changes and why]
+
+### Potential Risks/Considerations:
+- [Risk 1 and mitigation]
+- [Risk 2 and mitigation]
+
+### Testing Strategy:
+- [How to verify the changes work]
+```
+
+## Asking Clarifying Questions
+
+**ALWAYS ASK QUESTIONS** when you encounter any of the following:
+
+### When to Ask Questions:
+- **Ambiguous Requirements**: The request could be interpreted in multiple ways
+- **Missing Context**: You don't understand the business logic or user flow
+- **Unclear Scope**: It's not clear what should or shouldn't be included
+- **Technical Assumptions**: You're unsure about existing system behavior
+- **Design Decisions**: Multiple valid approaches exist and user preference matters
+- **Data/Model Relationships**: You don't understand how data should be structured
+- **User Experience**: The desired UX/UI behavior is unclear
+- **Performance Requirements**: You don't know if there are specific performance needs
+- **Security Considerations**: You're unsure about authentication/authorization requirements
+- **Integration Points**: You don't understand how this connects to other systems
+
+### How to Ask Questions:
+- **Be Specific**: Ask about exact details, not general clarifications
+- **Provide Context**: Explain what you understand and what's unclear
+- **Offer Options**: When possible, present alternatives and ask for preference
+- **Ask About Edge Cases**: Clarify behavior for unusual scenarios
+- **Confirm Assumptions**: State what you assume and ask for confirmation
+
+### Example Questions:
+- "Should this feature be available to all users or only authenticated ones?"
+- "When you say 'user profile', do you mean the existing User model or a new ProfileUser model?"
+- "How should the system behave if the external API is unavailable?"
+- "Do you want this to be a full page or a modal dialog?"
+- "Should we preserve existing data when making this change?"
+
+**Remember**: It's better to ask questions upfront than to build the wrong thing!
+
+## Execution Guidelines
+
+- **Never** jump straight to code changes without planning
+- **Always** ask clarifying questions if anything is unclear or ambiguous
+- **Stop and ask** rather than making assumptions about requirements
+- **Always** explain your reasoning for the chosen approach
+- **Consider** alternative approaches and explain why you chose your method
+- **Document** your thought process in comments when making complex changes
+- **Test** your assumptions by examining the codebase first
+- **Confirm understanding** before proceeding with implementation
+
+## Ruby on Rails Specific Guidelines
+
+- Follow Rails conventions and naming patterns
+- Consider the MVC architecture when planning changes
+- Think about database migrations if model changes are needed
+- Consider routing implications for controller changes
+- Follow Rails security best practices
+
+## Exception Handling
+
+The only exceptions to detailed planning are:
+1. Simple typo fixes
+2. Adding basic comments or documentation
+3. Formatting/whitespace corrections
+
+For everything else: **ASK QUESTIONS, PLAN FIRST, EXECUTE SECOND**
