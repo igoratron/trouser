@@ -11,9 +11,16 @@
           <div class="flex flex-col space-y-4 h-full">
             <!-- URL Section -->
             <div class="flex-1">
-              <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">URL</h3>
-              <%= link_to bookmark.url, bookmark.url, target: "_blank", 
-                  class: 'text-blue-600 hover:text-blue-800 hover:underline break-all' %>
+              <% if bookmark.content&.dig('title').present? %>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Title</h3>
+                <%= link_to bookmark.content['title'], bookmark.url, target: "_blank", 
+                    class: 'text-blue-600 hover:text-blue-800 hover:underline block' %>
+                <p class="text-xs text-gray-400 mt-1 break-all"><%= bookmark.url %></p>
+              <% else %>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">URL</h3>
+                <%= link_to bookmark.url, bookmark.url, target: "_blank", 
+                    class: 'text-blue-600 hover:text-blue-800 hover:underline break-all' %>
+              <% end %>
             </div>
             
             <!-- Created At Section -->
