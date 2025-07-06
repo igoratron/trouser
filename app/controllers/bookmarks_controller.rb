@@ -21,8 +21,8 @@ class BookmarksController < ApplicationController
   def show
     bookmark = Bookmark.find_by!(url_id: params[:url_id])
     
-    # Extract and store content if not already extracted
-    if bookmark.content.nil?
+    # Extract and store content if not already extracted or if no_cache is requested
+    if bookmark.content.nil? || params[:no_cache].present?
       begin
         service = ContentExtractService.new(bookmark.url)
         extracted_data = service.call
@@ -38,7 +38,8 @@ class BookmarksController < ApplicationController
         }
         
         bookmark.save!
-        Rails.logger.info "Content extracted and stored for bookmark #{bookmark.url_id}"
+        cache_status = params[:no_cache].present? ? "re-extracted (cache bypassed)" : "extracted and stored"
+        Rails.logger.info "Content #{cache_status} for bookmark #{bookmark.url_id}"
         
       rescue ContentExtractService::Error => e
         @extraction_error = e.message
