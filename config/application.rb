@@ -21,5 +21,8 @@ module RubyRailsPostgres
     
     # Add services directory to autoload paths
     config.autoload_paths << Rails.root.join("app", "services")
+    
+    # Add presenters directory to autoload paths
+    config.autoload_paths << Rails.root.join("app", "presenters")
   end
 end

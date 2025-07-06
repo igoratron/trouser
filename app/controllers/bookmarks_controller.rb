@@ -1,6 +1,7 @@
 class BookmarksController < ApplicationController
   def index
-    @bookmarks = Bookmark.all.order(created_at: :desc)
+    bookmarks = Bookmark.all.order(created_at: :desc)
+    @bookmarks = bookmarks.map { |bookmark| BookmarkPresenter.new(bookmark) }
   end
 
   def new
@@ -18,16 +19,16 @@ class BookmarksController < ApplicationController
   end
 
   def show
-    @bookmark = Bookmark.find_by!(url_id: params[:url_id])
+    bookmark = Bookmark.find_by!(url_id: params[:url_id])
     
     # Extract and store content if not already extracted
-    if @bookmark.content.nil?
+    if bookmark.content.nil?
       begin
-        service = ContentExtractService.new(@bookmark.url)
+        service = ContentExtractService.new(bookmark.url)
         extracted_data = service.call
         
         # Store the extracted content in the JSON blob
-        @bookmark.content = {
+        bookmark.content = {
           title: extracted_data[:title],
           content: extracted_data[:content],
           word_count: extracted_data[:word_count],
@@ -36,25 +37,24 @@ class BookmarksController < ApplicationController
           extracted_at: extracted_data[:extracted_at]
         }
         
-        @bookmark.save!
-        @extracted_content = extracted_data
-        Rails.logger.info "Content extracted and stored for bookmark #{@bookmark.url_id}"
+        bookmark.save!
+        Rails.logger.info "Content extracted and stored for bookmark #{bookmark.url_id}"
         
       rescue ContentExtractService::Error => e
         @extraction_error = e.message
-        Rails.logger.error "Content extraction failed for #{@bookmark.url}: #{e.message}"
+        Rails.logger.error "Content extraction failed for #{bookmark.url}: #{e.message}"
         Rails.logger.error "Backtrace: #{e.backtrace.first(10).join("\n")}"
       end
     else
-      # Content already exists, use stored data
-      @extracted_content = @bookmark.content.symbolize_keys
-      Rails.logger.info "Using cached content for bookmark #{@bookmark.url_id}"
+      Rails.logger.info "Using cached content for bookmark #{bookmark.url_id}"
     end
+    
+    @bookmark_presenter = BookmarkPresenter.new(bookmark)
   end
 
   def destroy
-    @bookmark = Bookmark.find_by!(url_id: params[:url_id])
-    @bookmark.destroy
+    bookmark = Bookmark.find_by!(url_id: params[:url_id])
+    bookmark.destroy
     
     redirect_to bookmarks_path, notice: 'Bookmark was successfully deleted.'
   end
