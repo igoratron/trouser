@@ -195,9 +195,11 @@ class ContentExtractService
           }
         end.compact
       else
-        images = images.map do |url|
+        images = images.map do |src|
+          image_src = src.start_with?('http') ? src : URI.join(url, src).to_s
+
           {
-            src: url,
+            src: image_src,
             alt: '',
             title: ''
           }
