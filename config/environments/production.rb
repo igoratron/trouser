@@ -92,5 +92,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Allow requests from production host
-  config.hosts << ENV["PRODUCTION_HOST"] if ENV["PRODUCTION_HOST"].present?
+  config.hosts << ENV["RAILWAY_PUBLIC_DOMAIN"] if ENV["RAILWAY_PUBLIC_DOMAIN"].present?
 end

@@ -1,3 +1,5 @@
-This is a Rails 8 application.
-It uses sqlite in development and test.
-It uses postresql in production.
+
+Technology:
+- Rails 8
+- sqlite in development and test, postresql in production.
+- tailwind css
