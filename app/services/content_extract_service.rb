@@ -192,10 +192,16 @@ class ContentExtractService
             src: src,
             alt: img['alt'] || '',
             title: img['title'] || '',
-            width: img['width'],
-            height: img['height']
           }
         end.compact
+      else
+        images = images.map do |url|
+          {
+            src: url,
+            alt: '',
+            title: ''
+          }
+        end
       end
       
       images

@@ -64,6 +64,46 @@
           </div>
         </div>
 
+        <!-- Images Section -->
+        <% if @extracted_content[:images].present? && @extracted_content[:images].size > 1 %>
+          <details class="group">
+            <summary class="flex items-center justify-between p-2 text-sm font-medium text-gray-700 cursor-pointer hover:bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              <span>Images (<%= @extracted_content[:images].size %>)</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <% @extracted_content[:images].each_with_index do |image, index| %>
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                  <div class="aspect-w-16 aspect-h-9 bg-gray-100">
+                    <img 
+                      src="<%= image['src'] %>" 
+                      alt="<%= image['alt'] %>" 
+                      class="w-full h-48 object-cover"
+                      loading="lazy"
+                      onerror="this.parentElement.innerHTML='<div class=&quot;flex items-center justify-center h-full text-gray-400&quot;><svg class=&quot;w-8 h-8&quot; fill=&quot;currentColor&quot; viewBox=&quot;0 0 20 20&quot;><path fill-rule=&quot;evenodd&quot; d=&quot;M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z&quot; clip-rule=&quot;evenodd&quot;></path></svg></div>'"
+                    />
+                  </div>
+                  <div class="p-3">
+                    <div class="text-xs text-gray-500 mb-1">Image #<%= index + 1 %></div>
+                    <% if image['alt'].present? %>
+                      <div class="text-sm text-gray-900 font-medium mb-1"><%= image['alt'] %></div>
+                    <% end %>
+                    <% if image['title'].present? %>
+                      <div class="text-xs text-gray-600 mb-2"><%= image['title'] %></div>
+                    <% end %>
+                    <a href="<%= image['src'] %>" target="_blank" rel="noopener noreferrer" 
+                       class="text-xs text-blue-600 hover:text-blue-800 hover:underline break-all">
+                      View Original
+                    </a>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </details>
+        <% end %>
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Content</label>
           <div class="prose prose-base">
