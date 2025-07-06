@@ -100,8 +100,10 @@ GEM
     drb (2.2.3)
     erb (5.0.1)
     erubi (1.13.1)
+    fastimage (2.4.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    guess_html_encoding (0.0.11)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -199,6 +201,9 @@ GEM
     reline (0.6.1)
       io-console (~> 0.5)
     rexml (3.4.1)
+    ruby-readability (0.7.2)
+      guess_html_encoding (>= 0.0.4)
+      nokogiri (>= 1.6.0)
     rubyzip (2.4.1)
     securerandom (0.4.1)
     selenium-webdriver (4.34.0)
@@ -258,12 +263,14 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  fastimage (~> 2.4)
   importmap-rails
   jbuilder
   pg (~> 1.1)
   puma (~> 6.0)
   rails (~> 8.0.2)
   redis (~> 4.0)
+  ruby-readability
   selenium-webdriver
   sprockets-rails
   sqlite3 (~> 2.1)
