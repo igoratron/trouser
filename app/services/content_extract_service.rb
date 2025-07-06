@@ -66,7 +66,7 @@ class ContentExtractService
   def default_options
     {
       # Tags to preserve for formatting
-      tags: %w[div p h1 h2 h3 h4 h5 h6 strong b em i u blockquote ul ol li table tr td th thead tbody tfoot img a br hr pre code],
+      tags: %w[div p h1 h2 h3 h4 h5 h6 strong b em i u blockquote ul ol li table tr td th thead tbody tfoot img a br hr pre code figure],
       # Attributes to preserve
       attributes: %w[src href alt title id],
       # Remove empty nodes

@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   
   # Custom route for showing bookmark by url_id
   get 'bookmarks/:url_id', to: 'bookmarks#show', as: 'bookmark_show'
+  
+  # Custom route for deleting bookmark by url_id
+  delete 'bookmarks/:url_id', to: 'bookmarks#destroy', as: 'bookmark_destroy'
 
   # Defines the root path route ("/")
   root "bookmarks#index"
