@@ -82,3 +82,5 @@ group :test do
 end
 
 gem "fastimage", "~> 2.4"
+
+gem "byebug", "~> 12.0", :group => :development

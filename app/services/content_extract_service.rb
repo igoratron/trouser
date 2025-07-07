@@ -66,7 +66,7 @@ class ContentExtractService
   def default_options
     {
       # Tags to preserve for formatting
-      tags: %w[div p h1 h2 h3 h4 h5 h6 strong b em i u blockquote ul ol li table tr td th thead tbody tfoot img a br hr pre code figure picture figcaption],
+      tags: %w[div p h1 h2 h3 h4 h5 h6 strong b em i u blockquote ul ol li table tr td th thead tbody tfoot img a br hr pre code figure picture figcaption noscript],
       # Attributes to preserve
       attributes: %w[src href alt title id],
       # Remove empty nodes
@@ -129,16 +129,20 @@ class ContentExtractService
     end
 
     doc = Readability::Document.new(html_content, readability_options)
+
     # Convert relative image URLs to absolute URLs in content
     content_with_absolute_urls = convert_relative_image_urls(doc.content)
+    
+    # Convert noscript tags to div tags
+    content_with_converted_noscript = convert_noscript_to_div(content_with_absolute_urls)
 
     result = {
       url: url,
       title: extract_title(doc),
-      content: content_with_absolute_urls,
-      text_content: extract_text_content(content_with_absolute_urls),
+      content: content_with_converted_noscript,
+      text_content: extract_text_content(content_with_converted_noscript),
       images: extract_images(doc),
-      word_count: count_words(content_with_absolute_urls),
+      word_count: count_words(content_with_converted_noscript),
       extracted_at: Time.current
     }
 
@@ -253,6 +257,38 @@ class ContentExtractService
       doc.to_html
     rescue => e
       Rails.logger.warn "Failed to convert relative image URLs: #{e.message}" if defined?(Rails)
+      html_content
+    end
+  end
+
+  def convert_noscript_to_div(html_content)
+    return html_content if html_content.blank?
+
+    begin
+      doc = Nokogiri::HTML::DocumentFragment.parse(html_content)
+      
+      # Find all noscript tags and replace them with div tags
+      doc.css('noscript').each do |noscript|
+        # Create a new div element
+        div = doc.document.create_element('div')
+        
+        # Copy attributes from noscript to div (if any)
+        noscript.attributes.each do |name, attr|
+          div[name] = attr.value
+        end
+        
+        # Move all child nodes from noscript to div
+        noscript.children.each do |child|
+          div.add_child(child)
+        end
+        
+        # Replace noscript with div
+        noscript.replace(div)
+      end
+      
+      doc.to_html
+    rescue => e
+      Rails.logger.warn "Failed to convert noscript tags to div: #{e.message}" if defined?(Rails)
       html_content
     end
   end
