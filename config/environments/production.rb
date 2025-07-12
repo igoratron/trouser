@@ -58,7 +58,7 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  # Use a real queuing backend for Active Job (and separate queues per environment).
+  # Use a real queuing backend for Active Job (single database setup).
   config.active_job.queue_adapter = :solid_queue
   # config.active_job.queue_name_prefix = "ruby_rails_postgres_production"
 
