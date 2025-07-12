@@ -12,4 +12,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "bookmarks#index"
+  
+  # Development-only job status monitoring
+  if Rails.env.development?
+    get 'job_status', to: 'jobs#status'
+  end
 end

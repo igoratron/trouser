@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module RubyRailsPostgres
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 8.0
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -24,5 +24,8 @@ module RubyRailsPostgres
     
     # Add presenters directory to autoload paths
     config.autoload_paths << Rails.root.join("app", "presenters")
+    
+    # Configure Active Job to use Solid Queue
+    config.active_job.queue_adapter = :solid_queue
   end
 end

@@ -83,4 +83,8 @@ end
 
 gem "fastimage", "~> 2.4"
 
+# Background job processing with Solid Queue
+gem "solid_queue", "~> 1.1"
+gem "solid_cable", "~> 3.0"
+
 gem "byebug", "~> 12.0", :group => :development

@@ -5,6 +5,14 @@ class Bookmark < ApplicationRecord
   # JSON column for storing flexible bookmark content
   # Examples: { title: "Page Title", description: "...", tags: ["tag1", "tag2"] }
   
+  # Extraction status enum
+  enum :extraction_status, {
+    pending: 0,
+    processing: 1,
+    completed: 2,
+    failed: 3
+  }
+  
   before_validation :generate_url_id
   
   private

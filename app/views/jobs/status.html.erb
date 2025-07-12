@@ -1,0 +1,217 @@
+<div class="w-full max-w-6xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Job Status Dashboard</h1>
+    <div class="flex space-x-2">
+      <%= link_to 'Refresh', job_status_path, 
+          class: 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors' %>
+      <%= link_to 'Back to Bookmarks', root_path, 
+          class: 'px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors' %>
+    </div>
+  </div>
+
+  <!-- Job Statistics -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Total Jobs</h3>
+      <p class="text-2xl font-bold text-blue-600 dark:text-blue-400"><%= @job_stats[:total_jobs] %></p>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Pending</h3>
+      <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400"><%= @job_stats[:pending_jobs] %></p>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Completed</h3>
+      <p class="text-2xl font-bold text-green-600 dark:text-green-400"><%= @job_stats[:completed_jobs] %></p>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Failed</h3>
+      <p class="text-2xl font-bold text-red-600 dark:text-red-400"><%= @job_stats[:failed_jobs] %></p>
+    </div>
+  </div>
+
+  <!-- Queue Status -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Ready Queue</h3>
+      <p class="text-xl font-bold text-blue-600 dark:text-blue-400"><%= @job_stats[:ready_executions] %></p>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Processing</h3>
+      <p class="text-xl font-bold text-yellow-600 dark:text-yellow-400"><%= @job_stats[:claimed_executions] %></p>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Scheduled</h3>
+      <p class="text-xl font-bold text-purple-600 dark:text-purple-400"><%= @job_stats[:scheduled_executions] %></p>
+    </div>
+  </div>
+
+  <!-- Worker Processes -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Worker Processes</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border overflow-hidden">
+      <% if @processes.any? %>
+        <table class="min-w-full">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Name</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Kind</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">PID</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Last Heartbeat</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+            <% @processes.each do |process| %>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= process.name %></td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= process.kind %></td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= process.pid %></td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                  <%= time_ago_in_words(process.last_heartbeat_at) %> ago
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="p-4 text-gray-500 dark:text-gray-400">No worker processes found</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Recent Jobs -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Recent Jobs</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border overflow-hidden">
+      <% if @recent_jobs.any? %>
+        <table class="min-w-full">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">ID</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Class</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Status</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Created</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Finished</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+            <% @recent_jobs.each do |job| %>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= job.id %></td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= job.class_name %></td>
+                <td class="px-4 py-3 text-sm">
+                  <% if job.finished_at %>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">Completed</span>
+                  <% else %>
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">Pending</span>
+                  <% end %>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                  <%= time_ago_in_words(job.created_at) %> ago
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                  <%= job.finished_at ? "#{time_ago_in_words(job.finished_at)} ago" : "-" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="p-4 text-gray-500 dark:text-gray-400">No recent jobs found</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Failed Jobs -->
+  <% if @failed_jobs.any? %>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Recent Failed Jobs</h2>
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow border overflow-hidden">
+        <table class="min-w-full">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 w-1/3">Job ID</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Error Details</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+            <% @failed_jobs.each_with_index do |failed_job, index| %>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= failed_job.job_id %></td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100" colspan="3">
+                  <div class="max-w-full">
+                    <% has_details = (failed_job.error.is_a?(Hash) && failed_job.error['backtrace']) || failed_job.error.to_s.include?("\n") %>
+                    <% if has_details %>
+                      <details class="group">
+                        <summary class="cursor-pointer list-none">
+                          <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                              <div class="truncate mr-4">
+                                <%= failed_job.error.is_a?(Hash) ? failed_job.error['message'] : failed_job.error.to_s.split("\n").first %>
+                              </div>
+                              <span class="text-blue-600 hover:text-blue-800 text-xs inline-block mt-1 group-open:hidden">
+                                <%= failed_job.error.is_a?(Hash) && failed_job.error['backtrace'] ? 'Show Stack Trace' : 'Show Full Error' %>
+                              </span>
+                              <span class="text-blue-600 hover:text-blue-800 text-xs inline-block mt-1 hidden group-open:inline-block">
+                                Hide Details
+                              </span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                              <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                <%= time_ago_in_words(failed_job.created_at) %> ago
+                              </span>
+                              <span class="px-2 py-1 bg-blue-600 text-white rounded text-xs group-open:bg-blue-700">
+                                Details
+                              </span>
+                            </div>
+                          </div>
+                        </summary>
+                        <div class="mt-3 bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto">
+                          <pre class="text-xs whitespace-pre-wrap"><% if failed_job.error.is_a?(Hash) %>
+<strong>Error:</strong> <%= failed_job.error['message'] %>
+
+<% if failed_job.error['backtrace'] %>
+<strong>Stack Trace:</strong>
+<%= failed_job.error['backtrace'].join("\n") %>
+<% end %>
+<% else %>
+<strong>Full Error:</strong>
+<%= failed_job.error.to_s %>
+<% end %></pre>
+                        </div>
+                      </details>
+                    <% else %>
+                      <div class="flex items-center justify-between">
+                        <div class="truncate flex-1 mr-4">
+                          <%= failed_job.error.to_s %>
+                        </div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                          <%= time_ago_in_words(failed_job.created_at) %> ago
+                        </span>
+                      </div>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Quick Actions -->
+  <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+    <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Quick Actions</h3>
+    <div class="space-y-2 text-sm text-yellow-700 dark:text-yellow-300">
+      <p><strong>Clear failed jobs:</strong> <code>bin/rails runner "SolidQueue::FailedExecution.delete_all"</code></p>
+      <p><strong>Clear all jobs:</strong> <code>bin/rails runner "SolidQueue::Job.delete_all"</code></p>
+      <p><strong>Restart workers:</strong> Stop <code>bin/dev</code> and restart it</p>
+    </div>
+  </div>
+</div>
+

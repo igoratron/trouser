@@ -1,5 +1,6 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
+import "@rails/actioncable"
 
 // Theme toggle functionality - use turbo:load instead of DOMContentLoaded
 document.addEventListener('turbo:load', function() {
@@ -53,3 +54,4 @@ function updateToggleButton(isDark) {
     toggle.setAttribute('aria-label', 'Switch to dark mode');
   }
 }
+import "channels"

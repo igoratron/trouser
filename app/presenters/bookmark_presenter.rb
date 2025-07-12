@@ -87,6 +87,31 @@ class BookmarkPresenter
   def has_content?
     content.present?
   end
+  
+  # Extraction status methods
+  def extraction_status
+    bookmark.extraction_status
+  end
+  
+  def pending?
+    bookmark.pending?
+  end
+  
+  def processing?
+    bookmark.processing?
+  end
+  
+  def completed?
+    bookmark.completed?
+  end
+  
+  def failed?
+    bookmark.failed?
+  end
+  
+  def extraction_error
+    content&.dig('error') if failed?
+  end
 
   private
 
