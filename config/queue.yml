@@ -10,14 +10,9 @@ default: &default
 
 development:
   <<: *default
-  store:
-    adapter: active_record
 
 test:
   <<: *default
 
 production:
   <<: *default
-  store:
-    adapter: redis
-    url: <%= ENV['REDIS_URL'] || 'redis://localhost:6379/0' %>
